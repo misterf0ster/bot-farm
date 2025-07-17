@@ -1,31 +1,12 @@
-services:
-  bot-farmdb:
-    image: postgres:15
-    container_name: pg-workersdb
-    environment:
-      POSTGRES_DB: workersdb
-      POSTGRES_USER: workers
-      POSTGRES_PASSWORD: S3cureP@ssw0rd2025!
-    ports:
-      - "5544:5432"  # Внешний порт 5544, внутренний 5432
-    volumes:
-      - pg-workersdb-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U workers"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+version: '3.8'
 
+services:
   bot-farm:
     build: .
     container_name: workers-bot
-    depends_on:
-      - bot-farmdb
     environment:
-      - DATABASE_URL=postgresql://workers:S3cureP%40ssw0rd2025%21@bot-farmdb:5432/workersdb
+      - DATABASE_URL=postgresql://workers:S3cureP%40ssw0rd2025%21@host.docker.internal:5544/workersdb
     volumes:
       - ./logs:/app/logs
+      - ./sessions:/app/sessions
     restart: unless-stopped
-
-volumes:
-  pg-workersdb-data:

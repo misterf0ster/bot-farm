@@ -6,8 +6,6 @@ import json
 import asyncpg
 from playwright.async_api import async_playwright
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://workers:secret@db:5432/workersdb")
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -29,7 +27,7 @@ BACK_BUTTON = "Вернуться назад"
 START_COMMAND = "/start"
 TASKS_BUTTON = "Задания"
 
-RETRY_DELAY = 300  # 5 минут
+RETRY_DELAY = 30  # 30 секунд
 
 async def get_referral_and_sessions(conn):
     # Находит активную рефералку с незанятыми сессиями
